@@ -62,7 +62,7 @@ class TournamentController:
         if result == "2":
             match.player2win()
         if result == "3":
-            match.match_nul()
+            match.draw()
 
 
     @staticmethod

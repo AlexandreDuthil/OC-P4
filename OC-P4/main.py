@@ -4,13 +4,14 @@
 from Model.main import *
 from Controller.main import *
 
+
 def main():
     play = True
-    while play == True:
+    while play:
         TournamentController.menu()
+
     pass
 
 
-
 if __name__ == "__main__":
-        main()
+    main()
