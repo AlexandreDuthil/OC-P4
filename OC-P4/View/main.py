@@ -40,14 +40,26 @@ class AskInfos:
         result = input("Qui a gagné le match ?\n1 = {}\n2 = {}\n3 = égalité".format(match.player1, match.player2))
         return result
 
+    @staticmethod
+    def newRating():
+        last_name = input("Nom de famille : ")
+        first_name = input("Prénom : ")
+        birthdate = input("Date de naissance : ")
+        new_rating = input("Nouveau classement : ")
+        return last_name, first_name, birthdate, new_rating
 
+
+class Menu():
+    def __init__(self):
+        pass
 
     @staticmethod
-    def menu():
+    def main():
         # menu principal
         print("Bienvenue dans votre gestionnaire de tournoi d'échecs")
         response = input("Que voulez-vous faire ? \n1 = Créer un tournoi\n2 = Créer un joueur\n"
-                         "3 = Afficher la liste des joueurs\n" )
+                         "3 = Afficher la liste des joueurs\n4 = Modifier le classement d'un joueur\n"
+                         "5 = Quitter le programme\n" )
         return response
 
 # classe destinée à l'affichage d'infos
@@ -59,12 +71,27 @@ class ShowInfos:
     def player_list(player_list):
         for player in player_list:
             print(player)
+        print("\n")
 
     @staticmethod
-    def show_round_matches(match_list):
+    def round_matches(match_list):
         print("""
         Voici les matchs de ce round : 
         {}
         {}      
         """.format(match_list[0], match_list[1]))
+
+    @staticmethod
+    def player_already_exists(player):
+        print("""
+        Le joueur {} existe déjà dans la base de données
+        """).format(player)
+
+    @staticmethod
+    def tournamentResults(players_list):
+        print("Le tournoi est terminée, voici les résultats :\n")
+        for i, player in enumerate(players_list):
+            print("{}. {}, avec un score de {}".format(i+1, player, player.score))
+        print("\n")
+
 
