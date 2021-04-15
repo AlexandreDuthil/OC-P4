@@ -1,12 +1,13 @@
 #! /usr/bin/env python3
 # coding: utf-8
 
-import Controller.main as controller
+from controller.menu import Menu
 
 
 def main():
-    while controller.Tournament.play:
-        controller.Tournament.menu()
+    main_menu = Menu()
+    while Menu.play:
+        main_menu.display()
 
 
 if __name__ == "__main__":
