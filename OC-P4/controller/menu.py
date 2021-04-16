@@ -10,34 +10,35 @@ from operator import attrgetter
 
 class Menu:
     play = True
+    quit = True
 
     def __init__(self):
         self.actual_tournament = None
 
     def create_tournament(self):
-        players_list = [Player("Duthil", "Alexandre", "02/11/1998", "Homme", "1234"), Player("Ouvrard",
-                                                                                                         "Geoffrey",
-                                                                                                         "29/04/1998",
-                                                                                                         "Homme",
-                                                                                                         "1467"),
-                        Player("Agassi", "André", "29/04/1970", "Homme", "1189"),
-                        Player("Federer", "Roger", "09/08/1981", "Homme", "1689")]
+        # players_list = [Player("Duthil", "Alexandre", "02/11/1998", "Homme", "1234"),
+        #                 Player("Ouvrard", "Geoffrey", "29/04/1998", "Homme", "1467"),
+        #                 Player("Agassi", "André", "29/04/1970", "Homme", "1189"),
+        #                 Player("Federer", "Roger", "09/08/1981", "Homme", "1689")]
         tours = "infos tournées"  # j'invente une info de tournée pour l'instant, calcul plus tard
-        # infos = AskInfos.tournamentInfos()
-        # players_list = []
+        infos = AskInfos.tournament_infos()
+        players_list = []
+        x = 1
+        for i in range(int(infos[3])):
+            print("Joueur " + str(x))
+            players_list.append(Menu.create_player())
+            x += 1
         # for player in infos[3]:
         #     players_list.append(PlayerController.createWithInfos(player))
-        # new_tournament = Tournament(infos[0], infos[1], infos[2], tours, players_list, infos[4], infos[5], infos[6])
-        self.actual_tournament = Tournament("Tournoi test", "Poitiers", "24/04/2021", "tournée", players_list, "blitz",
-                                          "rien à dire")
+        self.actual_tournament = Tournament(infos[0], infos[1], infos[2], tours, players_list, infos[4], infos[5], infos[6])
+        # self.actual_tournament = Tournament("Tournoi test", "Poitiers", "24/04/2021", "tournée", players_list, "blitz",
+        #                                   "rien à dire")
         Menu.start(self)
 
     def start(self):
         for i in range(int(self.actual_tournament.round_number)):
             Menu.set_round(self, i + 1)
             ShowInfos.tournament_results(sorted(self.actual_tournament.players, key=attrgetter("score"), reverse=True))
-            # TODO : c'est là que je dois continuer le tournoi, créer l'affichage des scores et enregistrer l'objet Tournament
-            # TODO : le système ne sait pas comment classer les joueurs qui ont le même score sur le tournoi
         DataHandler.save(self.actual_tournament)
         self.actual_tournament = None
 
@@ -45,10 +46,11 @@ class Menu:
         this_round = Round(round_name)
         this_round.match_list = Menu.set_matches(self)
         print(this_round.name)
-        self.actual_tournament.rounds.append(this_round)
         ShowInfos.round_matches(this_round.match_list)
         for match in this_round.match_list:
             Menu.enter_match_result(match)
+        this_round.end()
+        self.actual_tournament.rounds.append(this_round)
 
     # TODO : le méthode setMatches ne prend pas en compte le fait que les joueurs se soient déja affrontés pour l'instant'
     def set_matches(self):
@@ -82,11 +84,19 @@ class Menu:
         if response == "2":
             Menu.create_player()
         if response == "3":
-            ShowInfos.player_list(sorted(DataHandler.player_deserializer(DataHandler.get_players()),
+            if AskInfos.sorting_method() == "1":
+                ShowInfos.player_list(sorted(DataHandler.player_deserializer(DataHandler.get_players()),
                                          key=attrgetter("last_name", "first_name")))
+            else:
+                ShowInfos.player_list(sorted(DataHandler.player_deserializer(DataHandler.get_players()),
+                                             key=attrgetter("rating"), reverse=True))
         if response == "4":
             Menu.modify_rating()
         if response == "5":
+            ShowInfos.tournament_list(DataHandler.tournament_deserializer(DataHandler.get_tournaments()))
+        if response == "6":
+            Menu.view_tournament(self)
+        if response == "7":
             Menu.play = False
 
     @staticmethod
@@ -95,6 +105,7 @@ class Menu:
         new_player = Player(infos[0], infos[1], infos[2], infos[3], infos[4])
         if DataHandler.check_existance(new_player):
             print("Ce joueur existe déja dans la base de donnée")
+            return new_player
         else:
             DataHandler.save(new_player)
             print("Le joueur {} a bien été créé".format(new_player.first_name))
@@ -111,3 +122,20 @@ class Menu:
     def modify_rating():
         last_name, first_name, birthdate, new_rating = AskInfos.new_rating()
         DataHandler.modify_rating(last_name, first_name, birthdate, new_rating)
+
+    def view_tournament(self):
+        name, place, date = AskInfos.view_tournament()
+        if DataHandler.search_tournament(name, place, date):
+            self.actual_tournament = DataHandler.tournament_deserializer(DataHandler.search_tournament(name, place, date))[0]
+            Menu.quit = False
+            while not Menu.quit:
+                response = ShowInfos.one_tournament(self.actual_tournament)
+                if response == "1":
+                    ShowInfos.tournament_results(self.actual_tournament.players)
+                if response == "2":
+                    ShowInfos.rounds(self.actual_tournament.rounds)
+                if response == "3":
+                    Menu.quit = True
+                    self.actual_tournament = None
+        else:
+            print("Ce tournoi n'existe pas")

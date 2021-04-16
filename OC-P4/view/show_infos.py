@@ -10,12 +10,28 @@ class ShowInfos:
         print("\n")
 
     @staticmethod
+    def tournament_list(tournament_list):
+        print("Voici la liste des tournois :")
+        for tournament in tournament_list:
+            print("Tournoi '{}', à {} le {}".format(tournament.name, tournament.place,
+                                                    tournament.date))
+        print("\n")
+
+    @staticmethod
+    def one_tournament(tournament):
+        print(tournament)
+        return input("1 = Afficher les joueurs et leurs résultats\n2 = Afficher les tours\n3 = Quitter")
+
+    @staticmethod
+    def rounds(round_list):
+        for round in round_list:
+            print(round)
+
+    @staticmethod
     def round_matches(match_list):
-        print("""
-        Voici les matchs de ce round : 
-        {}
-        {}      
-        """.format(match_list[0], match_list[1]))
+        print("Voici les matchs de ce round :\n")
+        for match in match_list:
+            print("{}".format(match))
 
     @staticmethod
     def player_already_exists(player):

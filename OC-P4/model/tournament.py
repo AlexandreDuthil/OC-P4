@@ -1,8 +1,8 @@
 
 class Tournament:
     def __init__(self, name, place, date, tours, players, timing_style, description, round_number=4):
-        self.name = name
-        self.place = place
+        self.name = name.capitalize()
+        self.place = place.capitalize()
         self.date = date
         self.tours = tours
         self.players = players
@@ -10,7 +10,6 @@ class Tournament:
         self.description = description
         self.round_number = round_number
         self.rounds = []
-        print("Le tournoi a commencé")
 
     def __repr__(self):
         return """
@@ -18,11 +17,10 @@ class Tournament:
         Lieu : {}
         Date : {}
         Nombre de tour : {}
-        Tournées : {}
         Joueurs : {}
         Contrôle du temps : {}
         Description : {}
-        """.format(self.name, self.place, self.date, self.round_number, self.tours,
+        """.format(self.name, self.place, self.date, self.round_number,
                    Tournament.display_players(self), self.timing_style, self.description)
 
     def display_players(self):
