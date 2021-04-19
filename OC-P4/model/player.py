@@ -5,9 +5,11 @@ class Player:
         self.birthdate = birthdate
         self.sex = sex
         self.rating = rating
-        self.attributs = ["last_name", "first_name", "birthdate", "sex", "rating"]
+        self.attributs = ["last_name", "first_name", "birthdate", "sex",
+                          "rating"]
         self.score = 0
 
     def __repr__(self):
-        return """{} {}, {}, sexe : {}, classement : {}""".format(self.last_name, self.first_name, self.birthdate,
-                                                                  self.sex, self.rating)
+        return """{} {}, {}, sexe : {}, classement : {}""".format(
+            self.last_name, self.first_name, self.birthdate, self.sex,
+            self.rating)

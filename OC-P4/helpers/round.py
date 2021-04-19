@@ -15,9 +15,13 @@ class Round:
         self.ending_date = datetime.date.today().strftime("%d/%m/%Y")
         self.ending_time = time.strftime("%Hh%M")
 
-    def __repr__(self): # TODO : problème d'affichage des joueurs dans les matchs
+    def __repr__(self):
         return """{}
               Date et heure de début : {}, {}
               Liste des matchs : {}
-              Date et heure de fin : {} {}""".format(self.name, self.starting_date, self.starting_time,
-                                                    self.match_list, self.ending_date, self.ending_time)
+              Date et heure de fin : {} {}""".format(self.name,
+                                                     self.starting_date,
+                                                     self.starting_time,
+                                                     self.match_list,
+                                                     self.ending_date,
+                                                     self.ending_time)

@@ -13,14 +13,18 @@ class ShowInfos:
     def tournament_list(tournament_list):
         print("Voici la liste des tournois :")
         for tournament in tournament_list:
-            print("Tournoi '{}', à {} le {}".format(tournament.name, tournament.place,
+            print("Tournoi '{}', à {} le {}".format(tournament.name,
+                                                    tournament.place,
                                                     tournament.date))
         print("\n")
 
     @staticmethod
     def one_tournament(tournament):
         print(tournament)
-        return input("1 = Afficher les joueurs et leurs résultats\n2 = Afficher les tours\n3 = Quitter")
+        return input("1 = Afficher les résultats\n"
+                     "2 = Afficher les tours\n"
+                     "3 = Afficher les joueurs\n"
+                     "3 = Quitter\n")
 
     @staticmethod
     def rounds(round_list):
@@ -43,5 +47,6 @@ class ShowInfos:
     def tournament_results(players_list):
         print("Le tournoi est terminée, voici les résultats :\n")
         for i, player in enumerate(players_list):
-            print("{}. {}, avec un score de {}".format(i+1, player, player.score))
+            print("{}. {}, avec un score de {}".format(i+1, player,
+                                                       player.score))
         print("\n")

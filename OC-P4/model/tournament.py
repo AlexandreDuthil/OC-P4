@@ -1,6 +1,7 @@
 
 class Tournament:
-    def __init__(self, name, place, date, tours, players, timing_style, description, round_number=4):
+    def __init__(self, name, place, date, tours, players, timing_style,
+                 description, round_number=4):
         self.name = name.capitalize()
         self.place = place.capitalize()
         self.date = date
@@ -21,10 +22,12 @@ class Tournament:
         Contrôle du temps : {}
         Description : {}
         """.format(self.name, self.place, self.date, self.round_number,
-                   Tournament.display_players(self), self.timing_style, self.description)
+                   Tournament.display_players(self), self.timing_style,
+                   self.description)
 
     def display_players(self):
         display_players = ""
         for player in self.players:
-            display_players += player.first_name + " " + player.last_name + ","
+            display_players += player.first_name + " " + player.last_name + \
+                               ", "
         return display_players

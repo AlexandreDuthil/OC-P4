@@ -21,4 +21,7 @@ class Match:
         pass
 
     def __repr__(self):
-        return "{} contre {}".format(self.player1, self.player2)
+        return "{} contre {}".format(self.player1.first_name + " " +
+                                     self.player1.last_name,
+                                     self.player2.first_name + " " +
+                                     self.player2.last_name)

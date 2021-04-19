@@ -7,9 +7,12 @@ class AskInfos:
     def main():
         # menu principal
         print("Bienvenue dans votre gestionnaire de tournoi d'échecs")
-        return input("Que voulez-vous faire ? \n1 = Créer un tournoi\n2 = Créer un joueur\n"
-                     "3 = Afficher la liste des joueurs\n4 = Modifier le classement d'un joueur\n"
-                     "5 = Afficher les liste des tournois\n6 = Afficher les résultats d'un tournoi\n"
+        return input("Que voulez-vous faire ? \n1 = Créer un tournoi\n"
+                     "2 = Créer un joueur\n"
+                     "3 = Afficher la liste des joueurs\n"
+                     "4 = Modifier le classement d'un joueur\n"
+                     "5 = Afficher les liste des tournois\n"
+                     "6 = Afficher les résultats d'un tournoi\n"
                      "7 = Quitter le programme\n")
 
     @staticmethod
@@ -19,7 +22,8 @@ class AskInfos:
 
     # récupération des infos nécessaires à la création d'un objet Tournament
     @staticmethod
-    def tournament_infos():  # TODO : ne permet pas de choisir un joueur déja existant dans la BDD
+    def tournament_infos():
+        # existant dans la BDD
         name = input("Quel est le nom du tournoi ? : ")
         place = input("Quelle est la ville du tournoi ? : ")
         date = input("Date du tournoi ? : ")
@@ -28,7 +32,8 @@ class AskInfos:
         timing_style = input("Quel style de partie ? : ")
         description = input("Description ? : ")
 
-        return [name, place, date, players_number, timing_style, description, round_number]
+        return [name, place, date, players_number, timing_style, description,
+                round_number]
 
     # récupération des infos nécessaires à la création d'un objet Player
     @staticmethod
@@ -42,7 +47,8 @@ class AskInfos:
 
     @staticmethod
     def match_result(match):
-        result = input("Qui a gagné le match ?\n1 = {}\n2 = {}\n3 = égalité\n".format(match.player1, match.player2))
+        result = input("Qui a gagné le match ?\n1 = {}\n2 = {}\n3 = égalité\n"
+                       "".format(match.player1, match.player2))
         return result
 
     @staticmethod
