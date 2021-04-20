@@ -22,28 +22,66 @@ class AskInfos:
 
     # récupération des infos nécessaires à la création d'un objet Tournament
     @staticmethod
-    def tournament_infos():
-        # existant dans la BDD
+    def tournament_name():
         name = input("Quel est le nom du tournoi ? : ")
-        place = input("Quelle est la ville du tournoi ? : ")
-        date = input("Date du tournoi ? : ")
-        players_number = input("Combien y a-t-il de joueurs ? : ")
-        round_number = input("Combien de tour ? : ")
-        timing_style = input("Quel style de partie ? : ")
-        description = input("Description ? : ")
+        return name
 
-        return [name, place, date, players_number, timing_style, description,
-                round_number]
+    @staticmethod
+    def tournament_place():
+        place = input("Quelle est la ville du tournoi ? : ")
+        return place
+
+    @staticmethod
+    def tournament_date():
+        date = input("Date du tournoi ? : ")
+        return date
+
+    @staticmethod
+    def tournament_player_number():
+        players_number = input("Combien y a-t-il de joueurs ? : ")
+        return players_number
+
+    @staticmethod
+    def tournament_round_number():
+        round_number = input("Combien de tour ? : ")
+        return round_number
+
+    @staticmethod
+    def tournament_timing_style():
+        timing_style = input("Quel style de partie ? (Bullet, Blitz ou "
+                             "Coup rapide ) : ")
+        return timing_style
+
+    @staticmethod
+    def tournament_description():
+        description = input("Description ? : ")
+        return description
 
     # récupération des infos nécessaires à la création d'un objet Player
     @staticmethod
-    def player_infos():
+    def player_last_name():
         last_name = input("Nom de famille : ")
+        return last_name
+
+    @staticmethod
+    def player_first_name():
         first_name = input("Prénom : ")
-        birthdate = input("Date de naissance : ")
-        sex = input("Sexe : ")
+        return first_name
+
+    @staticmethod
+    def player_birthdate():
+        birthdate = input("Date de naissance ( XX/XX/XXXX ) : ")
+        return birthdate
+
+    @staticmethod
+    def player_sex():
+        sex = input("Sexe (H/F): ")
+        return sex
+
+    @staticmethod
+    def player_rating():
         rating = input("Classement : ")
-        return [last_name, first_name, birthdate, sex, rating]
+        return rating
 
     @staticmethod
     def match_result(match):

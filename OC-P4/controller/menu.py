@@ -6,6 +6,7 @@ from helpers.round import Round
 from helpers.match import Match
 from model.data_handler import DataHandler
 from operator import attrgetter
+from time import strptime
 
 
 class Menu:
@@ -16,17 +17,59 @@ class Menu:
         self.actual_tournament = None
 
     def create_tournament(self):
-        infos = AskInfos.tournament_infos()
+        name = AskInfos.tournament_name()
+        while not name.replace(" ", "").isalpha():
+            print("Le nom du tournoi ne peut être composé que de lettres")
+            name = AskInfos.tournament_name()
+
+        place = AskInfos.tournament_place()
+        while not place.replace(" ", "").isalpha():
+            print("La ville ne peut être composé que de lettres")
+            place = AskInfos.tournament_place()
+
+        date_ok = False
+        date = AskInfos.tournament_date()
+        while not date_ok:
+            try:
+                strptime(date, '%d/%m/%Y')
+                date_ok = True
+            except ValueError:
+                print("La date doit être au format JJ/MM/AAAA")
+                date = AskInfos.tournament_date()
+
+        player_number = AskInfos.tournament_player_number()
+        while not player_number.isnumeric():
+            print("Le nombre de joueur doit être un chiffre ou un ensemble"
+                  "de chiffres")
+            player_number = AskInfos.tournament_player_number()
+        while not 2 <= int(player_number) <= 1000:
+            print("Le nombre de joueur doit être compris entre 2 et 1000")
+            player_number = AskInfos.tournament_player_number()
+
+        timing_style = AskInfos.tournament_timing_style().capitalize()
+        while timing_style != "Blitz" and timing_style != "Bullet" and \
+                timing_style != "Coup rapide":
+            print("Le contrôle du temps doit être Bullet, Blitz ou "
+                  "Coup rapide")
+            timing_style = AskInfos.tournament_timing_style().capitalize()
+
+        description = AskInfos.tournament_description()
+
+        round_number = AskInfos.tournament_round_number()
+        while not 1 <= int(round_number) <= 20:
+            print("Le nombre de round doit être compris entre 1 et 20")
+            round_number = AskInfos.tournament_round_number()
+
         players_list = []
         x = 1
         tours = "rien"
-        for i in range(int(infos[3])):
+        for i in range(int(player_number)):
             print("Joueur " + str(x))
             players_list.append(Menu.create_player())
             x += 1
-        self.actual_tournament = Tournament(infos[0], infos[1], infos[2],
-                                            tours, players_list, infos[4],
-                                            infos[5], infos[6])
+        self.actual_tournament = Tournament(name, place, date,
+                                            tours, players_list, timing_style,
+                                            description, round_number)
         Menu.start(self)
 
     def start(self):
@@ -70,6 +113,12 @@ class Menu:
     @staticmethod
     def enter_match_result(match):
         result = AskInfos.match_result(match)
+        while not result.isnumeric():
+            print("Vous devez choisir une réponse entre 1 et 3")
+            result = AskInfos.match_result(match)
+        while not 1 <= int(result) <= 3:
+            print("Vous devez choisir une réponse entre 1 et 3")
+            result = AskInfos.match_result(match)
         if result == "1":
             match.player1win()
         if result == "2":
@@ -79,6 +128,12 @@ class Menu:
 
     def display(self):
         response = AskInfos.main()
+        while not response.isnumeric():
+            print("Vous devez choisir une réponse entre 1 et 7")
+            response = AskInfos.main()
+        while not 1 <= int(response) <= 7:
+            print("Vous devez choisir une réponse entre 1 et 7")
+            response = AskInfos.main()
         if response == "1":
             Menu.create_tournament(self)
         if response == "2":
@@ -104,22 +159,46 @@ class Menu:
 
     @staticmethod
     def create_player():
-        infos = AskInfos.player_infos()
-        new_player = Player(infos[0], infos[1], infos[2], infos[3], infos[4])
+        last_name = AskInfos.player_last_name()
+        while not last_name.replace(" ", "").isalpha():
+            print("Le nom de famille ne peut être composé que de lettres")
+            last_name = AskInfos.player_last_name()
+
+        first_name = AskInfos.player_first_name()
+        while not first_name.replace(" ", "").isalpha():
+            print("Le prénom ne peut être composé que de lettres")
+            first_name = AskInfos.player_first_name()
+
+        birthdate_ok = False
+        birthdate = AskInfos.player_birthdate()
+        while not birthdate_ok:
+            try:
+                strptime(birthdate, '%d/%m/%Y')
+                birthdate_ok = True
+            except ValueError:
+                print("La date doit être au format JJ/MM/AAAA")
+                birthdate = AskInfos.player_birthdate()
+
+        sex = AskInfos.player_sex().upper()
+        while sex != "H" and sex != "F":
+            print("Le sexe doit être au format H/F")
+            sex = AskInfos.player_sex()
+
+        rating = AskInfos.player_rating()
+        while not rating.isnumeric():
+            print("Le classement doit être un nombre")
+            rating = AskInfos.player_rating()
+
+        new_player = Player(last_name, first_name, birthdate, sex, rating)
         if DataHandler.check_existance(new_player):
-            print("Ce joueur existe déja dans la base de donnée")
+            print("Ce joueur existe déja dans la base de donnée, il n'est donc"
+                  " pas rajouté\n")
             return new_player
         else:
             DataHandler.save(new_player)
-            print("Le joueur {} a bien été créé".format(new_player.first_name))
+            print("Le joueur {} a bien été créé\n".format(
+                new_player.first_name))
             return new_player
-
-    @staticmethod
-    def create_with_infos(infos):
-        new_player = Player(infos[0], infos[1], infos[2], infos[3], infos[4])
-        print("Le joueur {} a bien été créé".format(new_player.first_name))
-        # players_list.append(new_player) -> plus nécessaire
-        return new_player
 
     @staticmethod
     def modify_rating():
@@ -134,12 +213,25 @@ class Menu:
             Menu.quit = False
             while not Menu.quit:
                 response = ShowInfos.one_tournament(self.actual_tournament)
+                while not response.isnumeric():
+                    print("Vous devez choisir une réponse entre 1 et 4")
+                    response = ShowInfos.one_tournament(self.actual_tournament)
+                while not 1 <= int(response) <= 4:
+                    print("Vous devez choisir une réponse entre 1 et 4")
+                    response = ShowInfos.one_tournament(self.actual_tournament)
                 if response == "1":
                     ShowInfos.tournament_results(
                         self.actual_tournament.players)
                 if response == "2":
                     ShowInfos.rounds(self.actual_tournament.rounds)
                 if response == "3":
+                    result = AskInfos.sorting_method()
+                    while not result.isnumeric():
+                        print("Vous devez choisir une réponse entre 1 et 2")
+                        result = AskInfos.sorting_method()
+                    while not 1 <= int(result) <= 2:
+                        print("Vous devez choisir une réponse entre 1 et 2")
+                        result = AskInfos.sorting_method()
                     if AskInfos.sorting_method() == "1":
                         ShowInfos.player_list(
                             sorted(self.actual_tournament.players,
