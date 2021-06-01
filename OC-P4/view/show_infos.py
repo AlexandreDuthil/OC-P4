@@ -24,7 +24,7 @@ class ShowInfos:
         return input("1 = Afficher les résultats\n"
                      "2 = Afficher les tours\n"
                      "3 = Afficher les joueurs\n"
-                     "3 = Quitter\n")
+                     "4 = Quitter\n")
 
     @staticmethod
     def rounds(round_list):

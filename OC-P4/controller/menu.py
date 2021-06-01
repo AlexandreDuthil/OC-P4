@@ -121,9 +121,9 @@ class Menu:
             result = AskInfos.match_result(match)
         if result == "1":
             match.player1win()
-        if result == "2":
+        elif result == "2":
             match.player2win()
-        if result == "3":
+        elif result == "3":
             match.draw()
 
     def display(self):
@@ -136,9 +136,9 @@ class Menu:
             response = AskInfos.main()
         if response == "1":
             Menu.create_tournament(self)
-        if response == "2":
+        elif response == "2":
             Menu.create_player()
-        if response == "3":
+        elif response == "3":
             if AskInfos.sorting_method() == "1":
                 ShowInfos.player_list(sorted(DataHandler.player_deserializer(
                     DataHandler.get_players()),
@@ -147,14 +147,14 @@ class Menu:
                 ShowInfos.player_list(sorted(DataHandler.player_deserializer(
                     DataHandler.get_players()),
                     key=attrgetter("rating"), reverse=True))
-        if response == "4":
+        elif response == "4":
             Menu.modify_rating()
-        if response == "5":
+        elif response == "5":
             ShowInfos.tournament_list(DataHandler.tournament_deserializer(
                 DataHandler.get_tournaments()))
-        if response == "6":
+        elif response == "6":
             Menu.view_tournament(self)
-        if response == "7":
+        elif response == "7":
             Menu.play = False
 
     @staticmethod
@@ -222,9 +222,9 @@ class Menu:
                 if response == "1":
                     ShowInfos.tournament_results(
                         self.actual_tournament.players)
-                if response == "2":
+                elif response == "2":
                     ShowInfos.rounds(self.actual_tournament.rounds)
-                if response == "3":
+                elif response == "3":
                     result = AskInfos.sorting_method()
                     while not result.isnumeric():
                         print("Vous devez choisir une réponse entre 1 et 2")
@@ -232,15 +232,15 @@ class Menu:
                     while not 1 <= int(result) <= 2:
                         print("Vous devez choisir une réponse entre 1 et 2")
                         result = AskInfos.sorting_method()
-                    if AskInfos.sorting_method() == "1":
+                    if result == "1":
                         ShowInfos.player_list(
                             sorted(self.actual_tournament.players,
                                    key=attrgetter("last_name", "first_name")))
-                    else:
+                    elif result == "2":
                         ShowInfos.player_list(
                             sorted(self.actual_tournament.players,
                                    key=attrgetter("rating"), reverse=True))
-                if response == "4":
+                elif response == "4":
                     Menu.quit = True
                     self.actual_tournament = None
         else:

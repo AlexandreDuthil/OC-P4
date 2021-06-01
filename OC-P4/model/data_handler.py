@@ -100,13 +100,13 @@ class DataHandler:
                                       player["sex"], int(player["rating"])))
                 this_player.score = player["score"]
                 players_list.append(this_player)
-        if isinstance(object, Player):
+        elif isinstance(object, Player):
             this_player = (Player(object["last_name"], object["first_name"],
                                   object["birthdate"],
                                   object["sex"], int(object["rating"])))
             this_player.score = object["score"]
             players_list.append(this_player)
-        if isinstance(object, dict):
+        elif isinstance(object, dict):
             this_player = (Player(object["last_name"], object["first_name"],
                                   object["birthdate"],
                                   object["sex"], int(object["rating"])))
@@ -170,9 +170,9 @@ class DataHandler:
     def save(object):
         if isinstance(object, Player):
             players_table.insert(DataHandler.serializer(object))
-        if isinstance(object, Tournament):
+        elif isinstance(object, Tournament):
             tournament_table.insert(DataHandler.serializer(object))
-        if isinstance(object, list):
+        elif isinstance(object, list):
             if isinstance(object[0], Player):
                 for player in object:
                     players_table.insert(DataHandler.serializer(player))
